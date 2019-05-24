@@ -1,0 +1,79 @@
+{% load staticfiles %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>
+            Excel file upload and processing : Django Example : ThePythonDjango.Com
+        </title>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        
+    </head>
+    <body style="margin-top: 30px;margin-left: 30px;">
+        <form action="{% url "myapp:index" %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file"
+                   title="Upload excel file"
+                   name="excel_file"
+                   style="border: 1px solid black; padding: 5px;"
+                   required="required">
+            <p>
+            <input type="submit"
+                   value="Upload"
+                   style="border: 1px solid green; padding:5px; border-radius: 2px; cursor: pointer;">
+        </form>
+        <!--圖-->
+        <!--<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+        <div id="chartContainer123" style="height: 370px; width: 100%;"></div>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
+
+        <div id="abc"></div>
+
+        <script type="text/javascript">
+
+            var context = {{context|safe}}
+            //document.getElementById("chartContainer1").innerHTML="aaaa";
+            //document.getElementsByClassName("panel-heading").h4="bbbb";
+        </script>
+
+        
+
+        <script src="{% static 'js/image.js' %}"></script>
+
+
+        
+        
+        <div>
+            <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
+        <div>
+
+        
+        <!--<div class="col-lg-3">
+            <div class="panel panel-yellow">
+                <div class="panel-heading">
+                    <h4>膽固醇</h4>
+                </div>
+                
+                <div class="panel-body">
+                    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+                </div>
+            </div>
+        </div>-->
+
+
+
+
+        <p></p>
+        <hr>
+
+        {% for row in excel_data %}
+            {% for cell in row %}
+                {{ cell }}&nbsp;&nbsp;
+            {% endfor %}
+            <br>
+        {% endfor %}
+        
+    </body>
+</html>
