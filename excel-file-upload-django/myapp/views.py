@@ -44,13 +44,13 @@ def index(request):
                 print(cell.value)
             excel_data.append(row_data)
         
-        context = data_processing(excel_data)
+        context = data_processing_box(excel_data)
         
         
         return render(request, 'myapp/index.html', {'context':json.dumps(context)})
 
 
-def data_processing(excel_data):
+def data_processing_box(excel_data):
 
     #存title
     title = excel_data[0]
@@ -62,10 +62,10 @@ def data_processing(excel_data):
     title.remove('BIRTHDAY')
     title.remove('GLU')
     title.remove('PRO')
-
     context=[]
-    print(context,'asdasdaasda')
     for num in range(len(title)):
+        count = np.sum(df[title[num]].values == "None")
+        print(count)
         df[title[num]] = df[title[num]].replace('None',"")
         df[title[num]] = pd.to_numeric(df[title[num]], errors='ignore')
         tmp = {}
@@ -76,6 +76,7 @@ def data_processing(excel_data):
         tmp['Q'].append(df[title[num]].quantile(0.5))
         tmp['Q'].append(df[title[num]].quantile(0.75))
         tmp['Q'].append(df[title[num]].quantile(1))
+        tmp['sum']= str(len(df[title[num]])-count)
         context.append(tmp)
     print(context)
     return context

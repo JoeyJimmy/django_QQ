@@ -32,22 +32,34 @@
         <div id="abc"></div>
 
         <script type="text/javascript">
-
             var context = {{context|safe}}
-            //document.getElementById("chartContainer1").innerHTML="aaaa";
-            //document.getElementsByClassName("panel-heading").h4="bbbb";
         </script>
 
         
 
         <script src="{% static 'js/image.js' %}"></script>
-
-
-        
-        
-        <div>
-            <div id="chartContainer1" style="height: 370px; width: 100%;"></div>
-        <div>
+        <script type="text/javascript">
+            document.write("<div id=page-wrapper style=margin-left:0> <div class=row>")
+            for(num=0 ; num<context.length;num++){
+                x = "<div class=col-lg-3>"+
+                    "<div class=panel panel-yellow>"+
+                    "<div class=panel-body>"+
+                    "<div id="+context[num]['title']+" style=height:370px; width:100%;></div>"+
+                    "</div>"+
+                    "</div>"+
+                    "</div>"
+                //x = "<div class=panel-body> "+
+                //    "<div id="+context[num]['title']+
+                //    " style=height: 370px; width: 100%;></div></div>";
+                document.write(x);
+            }
+            document.write("</div> </div>")
+            
+        </script>
+      
+        <!--<div>
+            <div id=HEIGHT style=height: 370px; width: 100%;></div>
+        <div>-->
 
         
         <!--<div class="col-lg-3">

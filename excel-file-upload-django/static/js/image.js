@@ -1,13 +1,19 @@
 
 window.onload = function () {
+    var mini = 0
     for (var i=0;i<context.length;i++){
-        var chart = new CanvasJS.Chart('chartContainer1', {
+        if(context[i]['Q'][0]-10 < 0){ mini = 0 }
+        else {mini = Math.round(context[i]['Q'][0]-10)}
+        
+        var chart = new CanvasJS.Chart(context[i]['title'], {
             animationEnabled: true,
             title:{
 	            text: context[i]['title']
             },
             axisY: {
-                interval: 100
+                //interval: context[i]['Q'][3] - context[i]['Q'][1],
+                interval: Math.round((context[i]['Q'][3]-context[i]['Q'][1])/10)*10,
+                minimum : mini
             },
             dataPointMaxWidth: 20,
             data: [{
@@ -19,7 +25,7 @@ window.onload = function () {
                 lineThickness:2,
                 color: "black",
                 dataPoints: [
-                    { label: "Registered Nurse", y: [context[i]['Q'][0], context[i]['Q'][1], context[i]['Q'][3], context[i]['Q'][4], context[i]['Q'][2] ]}, 
+                    { label: "樣本總數："+context[i]['sum'], y: [context[i]['Q'][0], context[i]['Q'][1], context[i]['Q'][3], context[i]['Q'][4], context[i]['Q'][2] ]}, 
                 ]
             }]
         });

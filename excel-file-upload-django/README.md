@@ -17,6 +17,3 @@
     https://www.pythoncircle.com/post/591/how-to-upload-and-process-the-excel-file-in-django/
 
 ![alt text](https://github.com/anuragrana/excel-file-upload-django/blob/master/excel-django.png)
-
-
-修改中 目前程式是直接copy其他大大的
