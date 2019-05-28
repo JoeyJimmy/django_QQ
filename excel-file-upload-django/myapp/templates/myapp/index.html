@@ -29,16 +29,17 @@
         <div id="chartContainer123" style="height: 370px; width: 100%;"></div>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>-->
 
-        <div id="abc"></div>
 
         <script type="text/javascript">
             var context = {{context|safe}}
+            var error = {{error|safe}}
         </script>
 
         
 
         <script src="{% static 'js/image.js' %}"></script>
         <script type="text/javascript">
+            //製作圖表
             document.write("<div id=page-wrapper style=margin-left:0> <div class=row>")
             for(num=0 ; num<context.length;num++){
                 x = "<div class=col-lg-3>"+
@@ -48,36 +49,20 @@
                     "</div>"+
                     "</div>"+
                     "</div>"
-                //x = "<div class=panel-body> "+
-                //    "<div id="+context[num]['title']+
-                //    " style=height: 370px; width: 100%;></div></div>";
                 document.write(x);
             }
             document.write("</div> </div>")
             
         </script>
       
-        <!--<div>
-            <div id=HEIGHT style=height: 370px; width: 100%;></div>
-        <div>-->
+        <script type="text/javascript">
+            //顯示格式錯誤的欄位
+            document.write("<p>"+ error['box_error'] +"</p>");
+        </script>
+        
+
 
         
-        <!--<div class="col-lg-3">
-            <div class="panel panel-yellow">
-                <div class="panel-heading">
-                    <h4>膽固醇</h4>
-                </div>
-                
-                <div class="panel-body">
-                    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
-                </div>
-            </div>
-        </div>-->
-
-
-
-
-        <p></p>
         <hr>
 
         {% for row in excel_data %}

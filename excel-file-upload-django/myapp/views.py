@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 
 
+error={'box_error':[]}
 
 
 def index(request):
@@ -43,11 +44,15 @@ def index(request):
                 row_data.append(str(cell.value))
                 print(cell.value)
             excel_data.append(row_data)
+
         
+        error['box_error'].clear()
         context = data_processing_box(excel_data)
+        #context.append(data_processing_box(excel_data))
+        #context.append(data_processing_pie(excel_data))
         
         
-        return render(request, 'myapp/index.html', {'context':json.dumps(context)})
+        return render(request, 'myapp/index.html', {'context':json.dumps(context),'error':json.dumps(error)})
 
 
 def data_processing_box(excel_data):
@@ -56,63 +61,45 @@ def data_processing_box(excel_data):
     title = excel_data[0]
     data = excel_data.copy()
     del data[0]
-    #將
+    #轉float
     df = pd.DataFrame(data, columns=title, dtype='float64')
-    title.remove('SQU_NO')
-    title.remove('BIRTHDAY')
-    title.remove('GLU')
-    title.remove('PRO')
+    #設定會傳入做四分位數的title名稱
+    title_list = ['HEIGHT', 'WEIGHT', 'PULSE', 'BLP', 'BHP', 'TC', 'TG', 'BUN', 'CREA', 'GOT', 'GPT']
     context=[]
     for num in range(len(title)):
-        count = np.sum(df[title[num]].values == "None")
-        print(count)
-        df[title[num]] = df[title[num]].replace('None',"")
-        df[title[num]] = pd.to_numeric(df[title[num]], errors='ignore')
-        tmp = {}
-        tmp['title'] = title[num]
-        tmp['Q'] = []
-        tmp['Q'].append(df[title[num]].quantile(0))
-        tmp['Q'].append(df[title[num]].quantile(0.25))
-        tmp['Q'].append(df[title[num]].quantile(0.5))
-        tmp['Q'].append(df[title[num]].quantile(0.75))
-        tmp['Q'].append(df[title[num]].quantile(1))
-        tmp['sum']= str(len(df[title[num]])-count)
-        context.append(tmp)
+        title[num] = str.upper(title[num])
+        if title[num] in title_list:
+            try:
+                count = np.sum(df[title[num]].values == "None")
+                #print(count)
+                df[title[num]] = df[title[num]].replace('None',"")
+                df[title[num]] = pd.to_numeric(df[title[num]], errors='ignore')
+                tmp = {}
+                tmp['title'] = title[num]
+                tmp['Q'] = []
+                tmp['Q'].append(df[title[num]].quantile(0))
+                tmp['Q'].append(df[title[num]].quantile(0.25))
+                tmp['Q'].append(df[title[num]].quantile(0.5))
+                tmp['Q'].append(df[title[num]].quantile(0.75))
+                tmp['Q'].append(df[title[num]].quantile(1))
+                tmp['sum']= str(len(df[title[num]])-count)
+                context.append(tmp)
+            except:
+                #print(title[num],'None')
+                error['box_error'].append(title[num])
     print(context)
     return context
 
-    #print(context['HEIGHT_Q0'])
 
-    #df['HEIGHT'] = df['HEIGHT'].replace('None',"")
-    #df['HEIGHT'] = pd.to_numeric(df['HEIGHT'], errors='ignore')
-    #print (df['BLP'])
-    #print(len(df['HEIGHT']))
-    #print(df.sort_values(by=['HEIGHT']))
-    #print(title)
-    #print(df.dtypes)
-    #print(df['BLP'].sort_values())
-    #print(len(excel_data))
-    #print("  ")
-    #print(len(excel_data))
-    #抓每個值來做圖表
-    #for row in range(len(excel_data[0])):
-        #for col in range(len(excel_data)):
-            #print()
-    # = excel_data.sort(key = sortSecond)
-    #a=np.array(excel_data)
-    #a=np.array(a[1:,3] , dtype=float)
-    #print(np.sort(a, axis=None))
-    #a = [5, 1, 4, 7, 2, 1]
-    #print (excel_data.sort(key = sortSecond))
-    #print(sorted(excel_data[1:,3]))        
-            
-            
-            
-            #print(row , col)
-            #print(excel_data[row][col])
 
-#def sortSecond(val): 
-    #return val[1:,5]
+
+def check_remove(title,key):
+    if key in title :
+        title.remove(key)
+
+
+
+
 
 
 
